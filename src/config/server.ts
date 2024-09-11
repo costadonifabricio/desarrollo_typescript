@@ -1,7 +1,9 @@
-import express, { Application } from "express";
-import cors from "cors";
-import morgan from "morgan";
-import equitmentRoutes from "../routes/index.routes";
+import express, { Application } from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import { PORT, HOST } from '../config/enviroments'; 
+import equitmentRoutes from '../routes/index.routes';
+import { dbConnection } from '../database/connection';
 
 export class Server {
   private app: Application;
@@ -11,8 +13,8 @@ export class Server {
 
   constructor() {
     this.app = express();
-    this.port = 4000;
-    this.host = "localhost";
+    this.port = PORT;
+    this.host = HOST;
     this.listening = this.listen;
 
     this.dgConnect();
@@ -20,8 +22,13 @@ export class Server {
     this.routes();
   }
 
-  private dgConnect() {
-    console.log("Conectando a la base de datos!");
+  private async dgConnect() {
+    try {
+      await dbConnection();
+      console.log("Conectado a la base de datos!");
+    } catch (error) {
+      console.error("Error en la base de datos:", error);
+    }
   }
 
   private middlewares(): void {
