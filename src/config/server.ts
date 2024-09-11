@@ -1,10 +1,10 @@
-import express, { Application } from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
-import { PORT, HOST } from '../config/enviroments'; 
-import userRoutes from '../routes/users.routes';
-import organizationRoutes from '../routes/organization.routes';
-import { dbConnection } from '../database/connection';
+import express, { Application } from "express";
+import cors from "cors";
+import morgan from "morgan";
+import { PORT, HOST } from "../config/enviroments";
+import userRoutes from "../routes/users.routes";
+import organizationRoutes from "../routes/organization.routes";
+import { dbConnection } from "../database/connection";
 
 export class Server {
   private app: Application;
@@ -39,12 +39,13 @@ export class Server {
   }
 
   private routes() {
-    this.app.use("/api", userRoutes, organizationRoutes);
+    this.app.use("/api", userRoutes);
+    this.app.use("/api", organizationRoutes);
   }
 
   public listen() {
     this.app.listen(this.port, () => {
-      console.log(`Server on http://${this.host}:${this.port}`);
+      console.log(`Servidor en http://${this.host}:${this.port}`);
     });
   }
 }

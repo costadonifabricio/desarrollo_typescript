@@ -12,7 +12,7 @@ export class OrganizationController {
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while retrieving organizations." });
+        .json({ error: "Se produjo un error al recuperar las organizaciones." });
     }
   }
 
@@ -23,12 +23,12 @@ export class OrganizationController {
       if (organization) {
         return res.json(organization);
       }
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).json({ error: "Organización no encontrada" });
     } catch (error) {
       res
         .status(500)
         .json({
-          error: "An error occurred while retrieving the organization.",
+          error: "Se produjo un error al recuperar la organización.",
         });
     }
   }
@@ -42,14 +42,14 @@ export class OrganizationController {
       if (existingOrganization) {
         return res
           .status(400)
-          .json({ error: "An organization with that name already exists." });
+          .json({ error: "Ya existe una organización con ese nombre." });
       }
       const organization = await Organizations.create(organizationData as any);
-      res.status(201).json({ msg: "Organization created", organization });
+      res.status(201).json({ msg: "Organización creada", organization });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while creating the organization." });
+        .json({ error: "Se produjo un error al crear la organización." });
     }
   }
 
@@ -64,11 +64,11 @@ export class OrganizationController {
       if (updatedOrganization) {
         return res.json(updatedOrganization);
       }
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).json({ error: "Organización no encontrada" });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while updating the organization." });
+        .json({ error: "Se produjo un error al actualizar la organización." });
     }
   }
 
@@ -78,13 +78,13 @@ export class OrganizationController {
       const organization = await Organizations.findByPk(organizationId);
       if (organization) {
         await Organizations.destroy({ where: { id: organizationId } });
-        return res.json({ msg: "Organization deleted" });
+        return res.json({ msg: "Organización eliminada" });
       }
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).json({ error: "Organización no encontrada" });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while deleting the organization." });
+        .json({ error: "Se produjo un error al eliminar la organización." });
     }
   }
 }

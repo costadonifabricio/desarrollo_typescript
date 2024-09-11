@@ -12,7 +12,7 @@ export class UsersController {
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while retrieving users." });
+        .json({ error: "Ocurrió un error al recuperar los usuarios." });
     }
   }
 
@@ -23,11 +23,11 @@ export class UsersController {
       if (user) {
         return res.json(user);
       }
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: "Usuario no encontrado" });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while retrieving the user." });
+        .json({ error: "Ocurrió un error al recuperar el usuario." });
     }
   }
 
@@ -40,14 +40,14 @@ export class UsersController {
       if (existingUser) {
         return res
           .status(400)
-          .json({ error: "A user with that email already exists." });
+          .json({ error: "Ya existe un usuario con ese correo electrónico." });
       }
       const user = await Users.create(userData as any);
-      res.status(201).json({ msg: "User created", user });
+      res.status(201).json({ msg: "Usuario creado", user });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while creating the user." });
+        .json({ error: "Ocurrió un error al crear el usuario." });
     }
   }
 
@@ -60,11 +60,11 @@ export class UsersController {
       if (updatedUser) {
         return res.json(updatedUser);
       }
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: "Usuario no encontrado" });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while updating the user." });
+        .json({ error: "Ocurrió un error al actualizar el usuario." });
     }
   }
 
@@ -75,13 +75,13 @@ export class UsersController {
         where: { id: userId },
       });
       if (deletedUser) {
-        return res.json({ msg: "User deleted" });
+        return res.json({ msg: "Usuario eliminado" });
       }
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: "Usuario no encontrado" });
     } catch (error) {
       res
         .status(500)
-        .json({ error: "An error occurred while deleting the user." });
+        .json({ error: "Ocurrió un error al eliminar el usuario." });
     }
   }
 }
