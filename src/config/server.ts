@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import { PORT, HOST } from '../config/enviroments'; 
 import userRoutes from '../routes/users.routes';
+import organizationRoutes from '../routes/organization.routes';
 import { dbConnection } from '../database/connection';
 
 export class Server {
@@ -38,7 +39,7 @@ export class Server {
   }
 
   private routes() {
-    this.app.use("/api", userRoutes);
+    this.app.use("/api", userRoutes, organizationRoutes);
   }
 
   public listen() {
