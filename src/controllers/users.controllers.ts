@@ -34,6 +34,14 @@ export class UsersController {
   public async createUser(req: Request, res: Response) {
     try {
       const userData: User = req.body;
+      const existingUser = await Users.findOne({
+        where: { email: userData.email },
+      });
+      if (existingUser) {
+        return res
+          .status(400)
+          .json({ error: "A user with that email already exists." });
+      }
       const user = await Users.create(userData as any);
       res.status(201).json({ msg: "User created", user });
     } catch (error) {
