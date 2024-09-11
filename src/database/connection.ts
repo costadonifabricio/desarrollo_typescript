@@ -10,7 +10,7 @@ export const db = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
 export async function dbConnection() {
   try {
     await db.authenticate();
-    console.log('Base de Datos Conectada!');
+    console.log('Base de Datos Creada!');
   } catch (error) {
     console.log('Error al conectar la Base de Datos: ', error);
   }
