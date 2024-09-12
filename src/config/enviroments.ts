@@ -7,3 +7,4 @@ export const DB_USER: string = String(process.env.DB_USER);
 export const DB_PASS: string = String(process.env.DB_PASS);
 export const DB_NAME: string = String(process.env.DB_NAME);
 export const DB_PORT: number = Number(process.env.DB_PORT);
+export const SECRET_KEY: string = String(process.env.SECRET_KEY);   
