@@ -5,6 +5,7 @@ import { PORT, HOST } from "../config/enviroments";
 import userRoutes from "../routes/users.routes";
 import organizationRoutes from "../routes/organization.routes";
 import providerRoutes from "../routes/provider.routes";
+import equipmentRoutes from "../routes/equipment.routes";
 import { dbConnection } from "../database/connection";
 
 export class Server {
@@ -43,6 +44,7 @@ export class Server {
     this.app.use("/api", userRoutes);
     this.app.use("/api", organizationRoutes);
     this.app.use("/api", providerRoutes);
+    this.app.use("/api", equipmentRoutes);
   }
 
   public listen() {
