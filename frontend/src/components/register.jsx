@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
 import "../../public/register.css";
 
-function Register({ onLoginClick }) {
+function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+  const navigate = useNavigate();
 
   const handleRoleChange = (event) => {
     setRole(event.target.value);
@@ -17,28 +19,35 @@ function Register({ onLoginClick }) {
     event.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:4000/api/users", {
-        name,
-        email,
-        password,
-        role,
-      });
+      const response = await axios.post(
+        "http://localhost:4000/api/users/register",
+        {
+          name,
+          email,
+          password,
+          role,
+        }
+      );
 
       if (response.status === 201) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
         Swal.fire({
-          title: "Registration Successful",
-          text: "You have registered successfully.",
+          title: "Registro Exitoso",
+          text: "Te has registrado correctamente.",
           icon: "success",
           confirmButtonText: "OK",
         }).then(() => {
+          navigate("/login");
         });
       }
     } catch (error) {
       Swal.fire({
-        title: "Registration Failed",
-        text: "There was an error with your registration.",
+        title: "Registro Fallido",
+        text: "Hubo un error al registrar tu cuenta.",
         icon: "error",
-        confirmButtonText: "Try Again",
+        confirmButtonText: "Volver a intentar",
       });
     }
   };
@@ -50,7 +59,7 @@ function Register({ onLoginClick }) {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Name"
+            placeholder="Nombre"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -64,7 +73,7 @@ function Register({ onLoginClick }) {
           />
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Contraseña"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -73,17 +82,17 @@ function Register({ onLoginClick }) {
             <label htmlFor="role">Elige tu Rol:</label>
             <select id="role" value={role} onChange={handleRoleChange}>
               <option value="admin">Admin</option>
-              <option value="user">User</option>
+              <option value="user">Usuario</option>
             </select>
           </div>
           <button type="submit">Register</button>
-          <p>
-            ¿Ya tienes una cuenta?{" "}
-            <span className="login-link" onClick={onLoginClick}>
-              Login
-            </span>
-          </p>
         </form>
+        <p>
+          ¿Ya tienes una cuenta?{" "}
+          <Link to="/login" className="login-link">
+            Inicia sesión aquí
+          </Link>
+        </p>
       </div>
     </div>
   );

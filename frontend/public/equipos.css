@@ -1,0 +1,85 @@
+.equipo-container {
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  
+  .equipo-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .equipo-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .equipo-form input,
+  .equipo-form select {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .equipo-form button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .equipo-form button:hover {
+    background-color: #218838;
+  }
+  
+  .equipo-lista {
+    margin-top: 20px;
+  }
+  
+  .equipo-lista h3 {
+    text-align: center;
+    color: #333;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  table th,
+  table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  table th {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .delete-btn {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .delete-btn:hover {
+    background-color: #c82333;
+  }
+  
