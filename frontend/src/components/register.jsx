@@ -21,12 +21,7 @@ function Register() {
     try {
       const response = await axios.post(
         "http://localhost:4000/api/users/register",
-        {
-          name,
-          email,
-          password,
-          role,
-        }
+        { name, email, password, role }
       );
 
       if (response.status === 201) {
@@ -53,46 +48,61 @@ function Register() {
   };
 
   return (
-    <div className="register-container">
-      <div className="register-form">
-        <h2>Crea tu Cuenta</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Nombre"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <div className="role-selection">
-            <label htmlFor="role">Elige tu Rol:</label>
-            <select id="role" value={role} onChange={handleRoleChange}>
-              <option value="admin">Admin</option>
-              <option value="user">Usuario</option>
-            </select>
-          </div>
-          <button type="submit">Register</button>
-        </form>
-        <p>
-          ¿Ya tienes una cuenta?{" "}
-          <Link to="/login" className="login-link">
-            Inicia sesión aquí
-          </Link>
-        </p>
+    <div className="register-page">
+      <div className="register-image"></div>
+      <div className="register-form-container">
+        <div className="form-wrapper">
+          <h2>Crea tu Cuenta</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="name">Nombre</label>
+              <input
+                type="text"
+                id="name"
+                placeholder="Ingresa tu nombre"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Ingresa tu email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Ingresa tu contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="role">Elige tu Rol:</label>
+              <select id="role" value={role} onChange={handleRoleChange}>
+                <option value="admin">Admin</option>
+                <option value="user">Usuario</option>
+              </select>
+            </div>
+            <button type="submit">Registrar</button>
+            <p>
+              ¿Ya tienes una cuenta?{" "}
+              <Link to="/login" className="login-link">
+                Inicia sesión aquí
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -15,10 +15,7 @@ function Login() {
     try {
       const response = await axios.post(
         "http://localhost:4000/api/users/login",
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
 
       if (response.status === 200) {
@@ -45,32 +42,43 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-form">
-        <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
-        </form>
-        <p>
-          ¿No tienes una cuenta?{" "}
-          <Link to="/register" className="register-link">
-            Regístrate aquí
-          </Link>
-        </p>
+    <div className="login-page">
+      <div className="login-image"></div>
+      <div className="login-form-container">
+        <div className="form-wrapper">
+          <h2>Login</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                placeholder="Ingrese su email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Ingrese su contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit">Login</button>
+            <p>
+              ¿No tienes una cuenta?{" "}
+              <Link to="/register" className="register-link">
+                Regístrate aquí
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );

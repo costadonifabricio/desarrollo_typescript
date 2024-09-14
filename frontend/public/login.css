@@ -1,62 +1,88 @@
-.login-container {
+
+.login-page {
+  display: flex;
+  height: 97.8vh;
+  overflow: hidden;
+}
+
+.login-image {
+  flex: 1;
+  background: url('./fondo.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.login-form-container {
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 95vh;
-  background: #ffffff;
+  background-color: #f4f4f9;
 }
 
-.login-form {
-  background: rgb(239, 239, 239);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.form-wrapper {
   width: 100%;
   max-width: 400px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-wrapper h2 {
+  margin-bottom: 20px;
+  color: #333;
   text-align: center;
 }
 
-.login-form h2 {
-  margin-bottom: 20px;
+.form-wrapper form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
   color: #333;
 }
 
-.login-form input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin-bottom: 15px;
+.input-group input {
+  width: 370px;
+  padding: 12px;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 16px;
 }
 
-.login-form button {
-  width: 200px;
-  padding: 10px;
-  border: none;
-  border-radius: 8px;
+button {
+  padding: 12px;
   background-color: #007bff;
-  color: white;
+  border: none;
+  color: #fff;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin-top: 10px;
+  transition: background-color 0.3s;
 }
 
-.login-form button:hover {
+button:hover {
   background-color: #0056b3;
 }
 
-.login-form p {
+p {
   margin-top: 15px;
-  color: #666;
+  text-align: center;
 }
 
-.login-form .register-link {
+.register-link {
   color: #007bff;
-  cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
-.login-form .register-link:hover {
-  color: #0056b3;
+.register-link:hover {
+  text-decoration: underline;
 }
