@@ -11,8 +11,10 @@ function EquipoManagement() {
   const [stock, setStock] = useState(0);
   const [category, setCategory] = useState("");
   const [state, setState] = useState(true);
-  const [editMode, setEditMode] = useState(false); // Nuevo estado para el modo edición
-  const [editId, setEditId] = useState(null); // Nuevo estado para el ID del equipo en edición
+  const [ubication, setUbication] = useState("");
+  const [date_adquisition, setDateAdquisition] = useState("");
+  const [editMode, setEditMode] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     axios
@@ -26,10 +28,9 @@ function EquipoManagement() {
   }, []);
 
   const handleAddOrUpdateEquipo = () => {
-    const equipo = { name, description, price, stock, category, state };
+    const equipo = { name, description, price, stock, category, state, ubication, date_adquisition };
 
     if (editMode) {
-      // Actualizar equipo
       axios
         .put(`http://localhost:4000/api/equipment/${editId}`, equipo)
         .then(() => {
@@ -42,10 +43,10 @@ function EquipoManagement() {
           console.error("Error al editar equipo:", error);
         });
     } else {
-      // Agregar nuevo equipo
       axios
         .post("http://localhost:4000/api/equipment", equipo)
         .then((response) => {
+          console.log("Respuesta de la API:", response.data);
           const equipoCreado = response.data.equipment;
           if (equipoCreado && equipoCreado.id) {
             setEquipos([...equipos, equipoCreado]);
@@ -81,8 +82,10 @@ function EquipoManagement() {
     setStock(equipo.stock);
     setCategory(equipo.category);
     setState(equipo.state);
-    setEditId(equipo.id); // Establecer ID del equipo en edición
-    setEditMode(true); // Habilitar modo edición
+    setDateAdquisition(equipo.date_adquisition);
+    setUbication(equipo.ubicacion);
+    setEditId(equipo.id);
+    setEditMode(true);
   };
 
   const resetForm = () => {
@@ -92,8 +95,10 @@ function EquipoManagement() {
     setStock(0);
     setCategory("");
     setState(true);
-    setEditMode(false); // Deshabilitar modo edición
-    setEditId(null); // Limpiar ID del equipo en edición
+    setDateAdquisition("");
+    setUbication("");
+    setEditMode(false);
+    setEditId(null);
   };
 
   return (
@@ -139,6 +144,18 @@ function EquipoManagement() {
             <option value={true}>Disponible</option>
             <option value={false}>No Disponible</option>
           </select>
+          <input
+            type="text"
+            placeholder="Ubicación"
+            value={ubication}
+            onChange={(e) => setUbication(e.target.value)}
+          />
+          <input
+            type="datetime-local"
+            placeholder="Fecha de compra"
+            value={date_adquisition}
+            onChange={(e) => setDateAdquisition(e.target.value)}
+          />
           <button onClick={handleAddOrUpdateEquipo}>
             {editMode ? "Actualizar Equipo" : "Agregar Equipo"}
           </button>
@@ -163,6 +180,8 @@ function EquipoManagement() {
                   <th>Stock</th>
                   <th>Categoría</th>
                   <th>Estado</th>
+                  <th>Ubicación</th>
+                  <th>Fecha de compra</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -176,6 +195,8 @@ function EquipoManagement() {
                       <td>{equipo.stock}</td>
                       <td>{equipo.category}</td>
                       <td>{equipo.state ? "Disponible" : "No Disponible"}</td>
+                      <td>{equipo.ubication}</td>
+                      <td>{equipo.date_adquisition}</td>
                       <td>
                         <button
                           className="delete-btn"

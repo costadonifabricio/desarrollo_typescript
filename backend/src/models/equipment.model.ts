@@ -10,6 +10,8 @@ export class EquipmentModel extends Model implements Equipment {
   public stock!: number;
   public category!: string;
   public state!: boolean;
+  public ubication!: string;
+  public date_adquisition!: Date;
   public createdAt!: Date;
   public updatedAt!: Date;
 }
@@ -43,6 +45,14 @@ EquipmentModel.init(
     },
     state: {
       type: new DataTypes.BOOLEAN(),
+      allowNull: false,
+    },
+    ubication: {
+      type: new DataTypes.STRING(128),
+      allowNull: false,
+    },
+    date_adquisition: {
+      type: new DataTypes.DATE(),
       allowNull: false,
     },
     createdAt: {
