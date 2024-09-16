@@ -8,9 +8,9 @@ const usersController = new UsersController();
 
 router.get("/users", authMiddleware, usersController.findAllUsers);
 router.get("/users/:id", authMiddleware, usersController.findUserById);
-router.post("/users/register", hashPassword, usersController.createUser);
+router.post("/auth/register", hashPassword, usersController.createUser);
 router.put("/users/:id", authMiddleware, usersController.updateUser);
 router.delete("/users/:id", authMiddleware, usersController.deleteUser);
-router.post("/users/login", usersController.loginUser);
+router.post("/auth/login", usersController.loginUser);
 
 export default router;

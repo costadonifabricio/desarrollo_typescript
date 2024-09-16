@@ -1,10 +1,8 @@
 export interface Equipment {
     id: number;
-    name: string;
+    brand: string;
     description: string;
-    price: number;
-    stock: number;
-    category: string;
+    model: string;
     state: boolean;
     ubication: string;
     date_adquisition: Date;

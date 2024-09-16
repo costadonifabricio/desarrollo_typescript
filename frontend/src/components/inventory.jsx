@@ -2,14 +2,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Nav from "./nav";
 import "../../public/equipos.css";
+import Swal from "sweetalert2";
 
 function EquipoManagement() {
   const [equipos, setEquipos] = useState([]);
-  const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [category, setCategory] = useState("");
+  const [model, setModel] = useState("");
   const [state, setState] = useState(true);
   const [ubication, setUbication] = useState("");
   const [date_adquisition, setDateAdquisition] = useState("");
@@ -28,7 +27,23 @@ function EquipoManagement() {
   }, []);
 
   const handleAddOrUpdateEquipo = () => {
-    const equipo = { name, description, price, stock, category, state, ubication, date_adquisition };
+    if (!brand || !description || !model || !ubication || !date_adquisition) {
+      Swal.fire({
+        icon: "error",
+        title: "Campos incompletos",
+        text: "Por favor, completa todos los campos obligatorios.",
+      });
+      return;
+    }
+
+    const equipo = {
+      brand,
+      description,
+      model,
+      state,
+      ubication,
+      date_adquisition,
+    };
 
     if (editMode) {
       axios
@@ -37,10 +52,20 @@ function EquipoManagement() {
           setEquipos(
             equipos.map((e) => (e.id === editId ? { ...e, ...equipo } : e))
           );
+          Swal.fire({
+            icon: "success",
+            title: "Equipo actualizado",
+            text: "El equipo se ha actualizado correctamente.",
+          });
           resetForm();
         })
         .catch((error) => {
           console.error("Error al editar equipo:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un problema al actualizar el equipo. Inténtalo nuevamente.",
+          });
         });
     } else {
       axios
@@ -50,6 +75,11 @@ function EquipoManagement() {
           const equipoCreado = response.data.equipment;
           if (equipoCreado && equipoCreado.id) {
             setEquipos([...equipos, equipoCreado]);
+            Swal.fire({
+              icon: "success",
+              title: "Equipo creado",
+              text: "El equipo se ha creado correctamente.",
+            });
             resetForm();
           } else {
             console.error(
@@ -60,40 +90,64 @@ function EquipoManagement() {
         })
         .catch((error) => {
           console.error("Error al agregar equipo:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Hubo un problema al agregar el equipo. Inténtalo nuevamente.",
+          });
         });
     }
   };
 
   const handleDeleteEquipo = (id) => {
-    axios
-      .delete(`http://localhost:4000/api/equipment/${id}`)
-      .then(() => {
-        setEquipos(equipos.filter((equipo) => equipo.id !== id));
-      })
-      .catch((error) => {
-        console.error("Error al eliminar equipo:", error);
-      });
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Una vez eliminado, no podrás recuperar este equipo.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:4000/api/equipment/${id}`)
+          .then(() => {
+            setEquipos(equipos.filter((equipo) => equipo.id !== id));
+            Swal.fire(
+              'Eliminado',
+              'El equipo ha sido eliminado.',
+              'success'
+            );
+          })
+          .catch((error) => {
+            console.error("Error al eliminar equipo:", error);
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "Hubo un problema al eliminar el equipo. Inténtalo nuevamente.",
+            });
+          });
+      }
+    });
   };
 
   const handleEditEquipo = (equipo) => {
-    setName(equipo.name);
+    setBrand(equipo.brand);
     setDescription(equipo.description);
-    setPrice(equipo.price);
-    setStock(equipo.stock);
-    setCategory(equipo.category);
+    setModel(equipo.model);
     setState(equipo.state);
     setDateAdquisition(equipo.date_adquisition);
-    setUbication(equipo.ubicacion);
+    setUbication(equipo.ubication);
     setEditId(equipo.id);
     setEditMode(true);
   };
 
   const resetForm = () => {
-    setName("");
+    setBrand("");
     setDescription("");
-    setPrice(0);
-    setStock(0);
-    setCategory("");
+    setModel("");
     setState(true);
     setDateAdquisition("");
     setUbication("");
@@ -107,55 +161,67 @@ function EquipoManagement() {
       <div className="equipo-container">
         <h2>Gestión de Equipos Informáticos</h2>
         <div className="equipo-form">
-          <input
-            type="text"
-            placeholder="Nombre del equipo"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Descripción del equipo"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-          <input
-            type="number"
-            placeholder="Precio"
-            value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
-          />
-          <input
-            type="number"
-            placeholder="Stock"
-            value={stock}
-            onChange={(e) => setStock(parseInt(e.target.value, 10))}
-          />
-          <input
-            type="text"
-            placeholder="Categoría"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          />
-          <select
-            value={state}
-            onChange={(e) => setState(e.target.value === "true")}
-          >
-            <option value={true}>Disponible</option>
-            <option value={false}>No Disponible</option>
-          </select>
-          <input
-            type="text"
-            placeholder="Ubicación"
-            value={ubication}
-            onChange={(e) => setUbication(e.target.value)}
-          />
-          <input
-            type="datetime-local"
-            placeholder="Fecha de compra"
-            value={date_adquisition}
-            onChange={(e) => setDateAdquisition(e.target.value)}
-          />
+          <div className="form-group">
+            <label htmlFor="brand">Marca del Equipo</label>
+            <input
+              id="brand"
+              type="text"
+              placeholder="Marca del equipo"
+              value={brand}
+              onChange={(e) => setBrand(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="description">Descripción del equipo</label>
+            <input
+              id="description"
+              type="text"
+              placeholder="Descripción del equipo"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="model">Modelo</label>
+            <input
+              id="model"
+              type="text"
+              placeholder="Modelo"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="state">Estado</label>
+            <select
+              id="state"
+              value={state}
+              onChange={(e) => setState(e.target.value === "true")}
+            >
+              <option value={true}>En Reparación</option>
+              <option value={false}>Fuera de Servicio</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="ubication">Ubicación</label>
+            <input
+              id="ubication"
+              type="text"
+              placeholder="Ubicación"
+              value={ubication}
+              onChange={(e) => setUbication(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="date_adquisition">Fecha de adquisición</label>
+            <input
+              id="date_adquisition"
+              type="datetime-local"
+              placeholder="Fecha de adquisicion"
+              value={date_adquisition}
+              onChange={(e) => setDateAdquisition(e.target.value)}
+            />
+          </div>
           <button onClick={handleAddOrUpdateEquipo}>
             {editMode ? "Actualizar Equipo" : "Agregar Equipo"}
           </button>
@@ -174,46 +240,40 @@ function EquipoManagement() {
             <table>
               <thead>
                 <tr>
-                  <th>Nombre</th>
+                  <th>Marca</th>
                   <th>Descripción</th>
-                  <th>Precio</th>
-                  <th>Stock</th>
-                  <th>Categoría</th>
+                  <th>Modelo</th>
                   <th>Estado</th>
                   <th>Ubicación</th>
-                  <th>Fecha de compra</th>
+                  <th>Fecha de adquisición</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
-                {equipos.map((equipo) => {
-                  return (
-                    <tr key={equipo.id}>
-                      <td>{equipo.name}</td>
-                      <td>{equipo.description}</td>
-                      <td>{equipo.price}</td>
-                      <td>{equipo.stock}</td>
-                      <td>{equipo.category}</td>
-                      <td>{equipo.state ? "Disponible" : "No Disponible"}</td>
-                      <td>{equipo.ubication}</td>
-                      <td>{equipo.date_adquisition}</td>
-                      <td>
-                        <button
-                          className="delete-btn"
-                          onClick={() => handleDeleteEquipo(equipo.id)}
-                        >
-                          Eliminar
-                        </button>
-                        <button
-                          className="edit-btn"
-                          onClick={() => handleEditEquipo(equipo)}
-                        >
-                          Editar
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {equipos.map((equipo) => (
+                  <tr key={equipo.id}>
+                    <td>{equipo.brand}</td>
+                    <td>{equipo.description}</td>
+                    <td>{equipo.model}</td>
+                    <td>{equipo.state ? "En Reparación" : "Fuera de Servicio"}</td>
+                    <td>{equipo.ubication}</td>
+                    <td>{equipo.date_adquisition}</td>
+                    <td>
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDeleteEquipo(equipo.id)}
+                      >
+                        Eliminar
+                      </button>
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEditEquipo(equipo)}
+                      >
+                        Editar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}

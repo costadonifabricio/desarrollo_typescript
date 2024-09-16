@@ -1,10 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 import "../../public/register.css";
 
 function Register() {
+  const { register } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,28 +20,19 @@ function Register() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/register",
-        { name, email, password, role }
-      );
-
-      if (response.status === 201) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-
-        Swal.fire({
-          title: "Registro Exitoso",
-          text: "Te has registrado correctamente.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          navigate("/login");
-        });
-      }
+      await register({ name, email, password, role });
+      Swal.fire({
+        title: "Registro Exitoso",
+        text: "Te has registrado correctamente.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/equipos");
+      });
     } catch (error) {
       Swal.fire({
         title: "Registro Fallido",
-        text: "Hubo un error al registrar tu cuenta.",
+        text: error.message || "Hubo un error al registrar tu cuenta.",
         icon: "error",
         confirmButtonText: "Volver a intentar",
       });
@@ -49,7 +41,9 @@ function Register() {
 
   return (
     <div className="register-page">
-      <div className="register-image"></div>
+      <div className="register-image">
+        <h1 className="welcome-title">Bienvenido a Formotex!</h1>
+      </div>
       <div className="register-form-container">
         <div className="form-wrapper">
           <h2>Crea tu Cuenta</h2>

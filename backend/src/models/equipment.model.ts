@@ -4,11 +4,9 @@ import { Equipment } from "../interfaces/equipment.interface";
 
 export class EquipmentModel extends Model implements Equipment {
   public id!: number;
-  public name!: string;
+  public brand!: string;
   public description!: string;
-  public price!: number;
-  public stock!: number;
-  public category!: string;
+  public model!: string;
   public state!: boolean;
   public ubication!: string;
   public date_adquisition!: Date;
@@ -23,7 +21,7 @@ EquipmentModel.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    name: {
+    brand: {
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
@@ -31,15 +29,7 @@ EquipmentModel.init(
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
-    price: {
-      type: new DataTypes.FLOAT(),
-      allowNull: false,
-    },
-    stock: {
-      type: new DataTypes.INTEGER(),
-      allowNull: false,
-    },
-    category: {
+    model: {
       type: new DataTypes.STRING(128),
       allowNull: false,
     },

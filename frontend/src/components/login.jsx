@@ -1,10 +1,11 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState, useContext } from "react";
 import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext"; 
 import "../../public/login.css";
 
 function Login() {
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -13,24 +14,16 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/users/login",
-        { email, password }
-      );
+      await login({ email, password });
 
-      if (response.status === 200) {
-        const token = response.data.token;
-        localStorage.setItem("token", token);
-
-        Swal.fire({
-          title: "Inicio Exitoso",
-          text: "Pudiste iniciar sin problemas.",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then(() => {
-          navigate("/equipos");
-        });
-      }
+      Swal.fire({
+        title: "Inicio Exitoso",
+        text: "Pudiste iniciar sin problemas.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        navigate("/equipos");
+      });
     } catch (error) {
       Swal.fire({
         title: "Inicio Fallido",
@@ -43,10 +36,12 @@ function Login() {
 
   return (
     <div className="login-page">
-      <div className="login-image"></div>
+      <div className="login-image">
+        <h1 className="welcome-title">Bienvenido a Formotex!</h1>
+      </div>
       <div className="login-form-container">
         <div className="form-wrapper">
-          <h2>Login</h2>
+          <h2>Iniciar Sesión</h2>
           <form onSubmit={handleSubmit}>
             <div className="input-group">
               <label htmlFor="email">Email</label>

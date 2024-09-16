@@ -1,4 +1,6 @@
-
+body {
+  background-color: #eef9ff;
+}
 .login-page {
   display: flex;
   height: 97.8vh;
@@ -7,8 +9,21 @@
 
 .login-image {
   flex: 1;
-  background: url('./fondo.jpg') no-repeat center center;
+  background-image: url("./fondo.jpg");
   background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  position: relative;
+}
+
+.welcome-title {
+  color: rgb(0, 0, 0);
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  text-align: center;
 }
 
 .login-form-container {
@@ -16,7 +31,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f4f4f9;
+  background-color: #eef9ff;
 }
 
 .form-wrapper {
