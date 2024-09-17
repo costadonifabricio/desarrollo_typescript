@@ -25,7 +25,6 @@ export class UsersService {
     }
 
     const user = await Users.create(userData as any);
-
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       "yourSecretKey",
@@ -62,7 +61,7 @@ export class UsersService {
     }
 
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      { id: user.id, email: user.email, role: user.role },
       "yourSecretKey",
       {
         expiresIn: "1h",

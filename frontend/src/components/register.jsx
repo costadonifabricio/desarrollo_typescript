@@ -84,8 +84,9 @@ function Register() {
             <div className="input-group">
               <label htmlFor="role">Elige tu Rol:</label>
               <select id="role" value={role} onChange={handleRoleChange}>
-                <option value="admin">Admin</option>
-                <option value="user">Usuario</option>
+                <option value="administrador">Admin</option>
+                <option value="técnico">Técnico</option>
+                <option value="gestor de inventario">Gestor de Inventario</option>
               </select>
             </div>
             <button type="submit">Registrar</button>

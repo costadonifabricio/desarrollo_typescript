@@ -10,6 +10,7 @@ import Login from "../components/login";
 import EquipoManagement from "../components/inventory";
 import PrivateRoute from "../components/privateRoute";
 import { AuthProvider } from "../context/AuthContext";
+import UserManagement from "../components/userPanel";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="user-panel" element={<UserManagement />} />
           <Route
             path="/equipos"
             element={
