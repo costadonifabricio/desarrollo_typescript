@@ -27,7 +27,7 @@ function Register() {
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
-        navigate("/equipos");
+        navigate("/welcome");
       });
     } catch (error) {
       Swal.fire({
@@ -85,7 +85,7 @@ function Register() {
               <label htmlFor="role">Elige tu Rol:</label>
               <select id="role" value={role} onChange={handleRoleChange}>
                 <option value="administrador">Admin</option>
-                <option value="técnico">Técnico</option>
+                <option value="tecnico">Técnico</option>
                 <option value="gestor de inventario">Gestor de Inventario</option>
               </select>
             </div>

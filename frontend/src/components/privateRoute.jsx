@@ -1,10 +1,16 @@
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
-function PrivateRoute({ children }) {
-  const token = localStorage.getItem("token");
+function PrivateRoute({ children, allowedRoles }) {
+  const { isAuthenticated, userRole } = useContext(AuthContext);
 
-  if (!token) {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
+  }
+
+  if (!allowedRoles.includes(userRole)) {
+    return <Navigate to="/welcome" />;
   }
 
   return children;

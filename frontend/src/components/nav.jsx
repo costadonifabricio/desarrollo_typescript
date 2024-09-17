@@ -10,14 +10,14 @@ function Nav() {
 
   const handleLogout = () => {
     Swal.fire({
-      title: '¿Estás seguro?',
+      title: "¿Estás seguro?",
       text: "Deseas cerrar sesión?",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, cerrar sesión',
-      cancelButtonText: 'Cancelar'
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
         logout();
@@ -28,14 +28,21 @@ function Nav() {
 
   return (
     <nav className="nav-bar">
-      {userRole === 'administrador' && (
+      {userRole === "administrador" && (
         <>
-          <button onClick={() => navigate("/user-panel")}>Panel de Usuarios</button>
+          <button onClick={() => navigate("/user-panel")}>
+            Panel de Usuarios
+          </button>
           <button onClick={() => navigate("/equipos")}>Panel de Equipos</button>
         </>
       )}
-      {(userRole === 'gestor' || userRole === 'tecnico') && (
+      {userRole === "gestor de inventario" && (
         <button onClick={() => navigate("/equipos")}>Panel de Equipos</button>
+      )}
+      {userRole === "tecnico" && (
+        <button onClick={() => navigate("/tecnico-panel")}>
+          Panel de Técnico
+        </button>
       )}
       <button onClick={handleLogout}>Cerrar Sesión</button>
     </nav>

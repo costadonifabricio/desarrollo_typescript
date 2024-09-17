@@ -22,7 +22,7 @@ function Login() {
         icon: "success",
         confirmButtonText: "OK",
       }).then(() => {
-        navigate("/equipos");
+        navigate("/welcome");
       });
     } catch (error) {
       Swal.fire({
