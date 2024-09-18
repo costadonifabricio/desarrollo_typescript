@@ -27,7 +27,9 @@ function EquipoManagement() {
 
   const fetchEquipos = () => {
     axios
-      .get("http://localhost:4000/api/equipment")
+      .get("http://localhost:4000/api/equipment", 
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      )
       .then((response) => {
         console.log("Equipos:", response.data);
         setEquipos(response.data);
@@ -92,7 +94,9 @@ function EquipoManagement() {
 
     if (editMode) {
       axios
-        .put(`http://localhost:4000/api/equipment/${editId}`, equipo)
+        .put(`http://localhost:4000/api/equipment/${editId}`, equipo,
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        )
         .then(() => {
           fetchEquipos(); 
           Swal.fire({
@@ -112,7 +116,9 @@ function EquipoManagement() {
         });
     } else {
       axios
-        .post("http://localhost:4000/api/equipment", equipo)
+        .post("http://localhost:4000/api/equipment", equipo, 
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        )
         .then((response) => {
           fetchEquipos();
           Swal.fire({
@@ -327,7 +333,8 @@ function EquipoManagement() {
                             if (result.isConfirmed) {
                               axios
                                 .delete(
-                                  `http://localhost:4000/api/equipment/${equipo.id}`
+                                  `http://localhost:4000/api/equipment/${equipo.id}`, 
+                                  { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
                                 )
                                 .then(() => {
                                   fetchEquipos();
