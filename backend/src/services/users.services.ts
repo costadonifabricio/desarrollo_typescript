@@ -2,6 +2,7 @@ import { Users } from "../models/users.model";
 import { User } from "../interfaces/users.interface";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { SECRET_KEY } from "../config/enviroments";
 
 export class UsersService {
   constructor() {}
@@ -27,7 +28,7 @@ export class UsersService {
     const user = await Users.create(userData as any);
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      "yourSecretKey",
+      SECRET_KEY,
       {
         expiresIn: "1h",
       }
@@ -62,7 +63,7 @@ export class UsersService {
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      "yourSecretKey",
+      SECRET_KEY,
       {
         expiresIn: "1h",
       }
