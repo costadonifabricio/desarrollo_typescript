@@ -14,6 +14,7 @@ import { AuthProvider } from "../context/AuthContext";
 import UserManagement from "../components/userPanel";
 import Welcome from "../components/welcome";
 import PageNotFound from "../components/pageNot";
+import Company from "../components/formCompany";
 
 function App() {
   return (
@@ -38,6 +39,14 @@ function App() {
             element={
               <PrivateRoute allowedRoles={["administrador"]}>
                 <UserManagement />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/company"
+            element={
+              <PrivateRoute allowedRoles={["administrador"]}>
+                <Company />
               </PrivateRoute>
             }
           />

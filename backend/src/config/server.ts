@@ -7,6 +7,10 @@ import organizationRoutes from "../routes/organization.routes";
 import providerRoutes from "../routes/provider.routes";
 import equipmentRoutes from "../routes/equipment.routes";
 import { dbConnection } from "../database/connection";
+import { EquipmentModel } from "../models/equipment.model";
+import { Organizations } from "../models/organization.model";
+import { ProviderModel } from "../models/provider.model";
+import { Users } from "../models/users.model";
 
 export class Server {
   private app: Application;
@@ -29,6 +33,18 @@ export class Server {
     try {
       await dbConnection();
       console.log("Conectado a la base de datos!");
+
+      await Users.sync();
+      console.log("Tabla de Users creada");
+
+      await Organizations.sync();
+      console.log("Tabla de Organizations creada");
+
+      await ProviderModel.sync();
+      console.log("Tabla de Providers creada");
+
+      await EquipmentModel.sync();
+      console.log("Tabla de Equipment creada");
     } catch (error) {
       console.error("Error en la base de datos:", error);
     }

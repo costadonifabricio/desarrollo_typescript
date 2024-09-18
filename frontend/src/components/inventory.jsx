@@ -12,22 +12,65 @@ function EquipoManagement() {
   const [state, setState] = useState(true);
   const [ubication, setUbication] = useState("");
   const [date_adquisition, setDateAdquisition] = useState("");
+  const [organizationId, setOrganizationId] = useState("");
+  const [providerId, setProviderId] = useState("");
+  const [organizations, setOrganizations] = useState([]);
+  const [providers, setProviders] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
 
   useEffect(() => {
+    fetchEquipos();
+    fetchOrganizations();
+    fetchProviders();
+  }, []);
+
+  const fetchEquipos = () => {
     axios
       .get("http://localhost:4000/api/equipment")
       .then((response) => {
+        console.log("Equipos:", response.data);
         setEquipos(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener equipos:", error);
       });
-  }, []);
+  };
+
+  const fetchOrganizations = () => {
+    axios
+      .get("http://localhost:4000/api/organizations")
+      .then((response) => {
+        console.log("Organizaciones:", response.data);
+        setOrganizations(response.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener organizaciones:", error);
+      });
+  };
+
+  const fetchProviders = () => {
+    axios
+      .get("http://localhost:4000/api/provider")
+      .then((response) => {
+        console.log("Proveedores:", response.data);
+        setProviders(response.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener proveedores:", error);
+      });
+  };
 
   const handleAddOrUpdateEquipo = () => {
-    if (!brand || !description || !model || !ubication || !date_adquisition) {
+    if (
+      !brand ||
+      !description ||
+      !model ||
+      !ubication ||
+      !date_adquisition ||
+      !organizationId ||
+      !providerId
+    ) {
       Swal.fire({
         icon: "error",
         title: "Campos incompletos",
@@ -43,15 +86,15 @@ function EquipoManagement() {
       state,
       ubication,
       date_adquisition,
+      organizationId,
+      providerId,
     };
 
     if (editMode) {
       axios
         .put(`http://localhost:4000/api/equipment/${editId}`, equipo)
         .then(() => {
-          setEquipos(
-            equipos.map((e) => (e.id === editId ? { ...e, ...equipo } : e))
-          );
+          fetchEquipos(); 
           Swal.fire({
             icon: "success",
             title: "Equipo actualizado",
@@ -71,22 +114,13 @@ function EquipoManagement() {
       axios
         .post("http://localhost:4000/api/equipment", equipo)
         .then((response) => {
-          console.log("Respuesta de la API:", response.data);
-          const equipoCreado = response.data.equipment;
-          if (equipoCreado && equipoCreado.id) {
-            setEquipos([...equipos, equipoCreado]);
-            Swal.fire({
-              icon: "success",
-              title: "Equipo creado",
-              text: "El equipo se ha creado correctamente.",
-            });
-            resetForm();
-          } else {
-            console.error(
-              "La respuesta de la API no contiene un equipo válido:",
-              response.data
-            );
-          }
+          fetchEquipos();
+          Swal.fire({
+            icon: "success",
+            title: "Equipo creado",
+            text: "El equipo se ha creado correctamente.",
+          });
+          resetForm();
         })
         .catch((error) => {
           console.error("Error al agregar equipo:", error);
@@ -99,51 +133,6 @@ function EquipoManagement() {
     }
   };
 
-  const handleDeleteEquipo = (id) => {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: "Una vez eliminado, no podrás recuperar este equipo.",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminarlo',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:4000/api/equipment/${id}`)
-          .then(() => {
-            setEquipos(equipos.filter((equipo) => equipo.id !== id));
-            Swal.fire(
-              'Eliminado',
-              'El equipo ha sido eliminado.',
-              'success'
-            );
-          })
-          .catch((error) => {
-            console.error("Error al eliminar equipo:", error);
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "Hubo un problema al eliminar el equipo. Inténtalo nuevamente.",
-            });
-          });
-      }
-    });
-  };
-
-  const handleEditEquipo = (equipo) => {
-    setBrand(equipo.brand);
-    setDescription(equipo.description);
-    setModel(equipo.model);
-    setState(equipo.state);
-    setDateAdquisition(equipo.date_adquisition);
-    setUbication(equipo.ubication);
-    setEditId(equipo.id);
-    setEditMode(true);
-  };
-
   const resetForm = () => {
     setBrand("");
     setDescription("");
@@ -151,8 +140,20 @@ function EquipoManagement() {
     setState(true);
     setDateAdquisition("");
     setUbication("");
+    setOrganizationId("");
+    setProviderId("");
     setEditMode(false);
     setEditId(null);
+  };
+
+  const getOrganizationName = (id) => {
+    const org = organizations.find((org) => org.id === id);
+    return org ? org.name : "Desconocido";
+  };
+
+  const getProviderName = (id) => {
+    const prov = providers.find((prov) => prov.id === id);
+    return prov ? prov.name : "Desconocido";
   };
 
   return (
@@ -217,10 +218,39 @@ function EquipoManagement() {
             <input
               id="date_adquisition"
               type="datetime-local"
-              placeholder="Fecha de adquisicion"
               value={date_adquisition}
               onChange={(e) => setDateAdquisition(e.target.value)}
             />
+          </div>
+          <div className="form-group">
+            <label htmlFor="organization">Organización</label>
+            <select
+              id="organization"
+              value={organizationId}
+              onChange={(e) => setOrganizationId(e.target.value)}
+            >
+              <option value="">Selecciona una organización</option>
+              {organizations.map((org) => (
+                <option key={org.id} value={org.id}>
+                  {org.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="provider">Proveedor</label>
+            <select
+              id="provider"
+              value={providerId}
+              onChange={(e) => setProviderId(e.target.value)}
+            >
+              <option value="">Selecciona un proveedor</option>
+              {providers.map((prov) => (
+                <option key={prov.id} value={prov.id}>
+                  {prov.name}
+                </option>
+              ))}
+            </select>
           </div>
           <button onClick={handleAddOrUpdateEquipo}>
             {editMode ? "Actualizar Equipo" : "Agregar Equipo"}
@@ -246,6 +276,8 @@ function EquipoManagement() {
                   <th>Estado</th>
                   <th>Ubicación</th>
                   <th>Fecha de adquisición</th>
+                  <th>Organización</th>
+                  <th>Proveedor</th>
                   <th>Acciones</th>
                 </tr>
               </thead>
@@ -255,21 +287,72 @@ function EquipoManagement() {
                     <td>{equipo.brand}</td>
                     <td>{equipo.description}</td>
                     <td>{equipo.model}</td>
-                    <td>{equipo.state ? "En Reparación" : "Fuera de Servicio"}</td>
+                    <td>
+                      {equipo.state ? "En Reparación" : "Fuera de Servicio"}
+                    </td>
                     <td>{equipo.ubication}</td>
-                    <td>{equipo.date_adquisition}</td>
+                    <td>
+                      {new Date(equipo.date_adquisition).toLocaleDateString()}
+                    </td>
+                    <td>{getOrganizationName(equipo.organizationId)}</td>
+                    <td>{getProviderName(equipo.providerId)}</td>
                     <td>
                       <button
-                        className="delete-btn"
-                        onClick={() => handleDeleteEquipo(equipo.id)}
-                      >
-                        Eliminar
-                      </button>
-                      <button
-                        className="edit-btn"
-                        onClick={() => handleEditEquipo(equipo)}
+                        onClick={() => {
+                          setEditMode(true);
+                          setEditId(equipo.id);
+                          setBrand(equipo.brand);
+                          setDescription(equipo.description);
+                          setModel(equipo.model);
+                          setState(equipo.state);
+                          setUbication(equipo.ubication);
+                          setDateAdquisition(equipo.date_adquisition);
+                          setOrganizationId(equipo.organizationId);
+                          setProviderId(equipo.providerId);
+                        }}
                       >
                         Editar
+                      </button>
+                      <button
+                        onClick={() => {
+                          Swal.fire({
+                            title: "¿Estás seguro?",
+                            text: "No podrás deshacer esta acción.",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Sí, borrar",
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              axios
+                                .delete(
+                                  `http://localhost:4000/api/equipment/${equipo.id}`
+                                )
+                                .then(() => {
+                                  fetchEquipos();
+                                  Swal.fire(
+                                    "Borrado!",
+                                    "El equipo ha sido borrado.",
+                                    "success"
+                                  );
+                                })
+                                .catch((error) => {
+                                  console.error(
+                                    "Error al borrar equipo:",
+                                    error
+                                  );
+                                  Swal.fire(
+                                    "Error!",
+                                    "Hubo un problema al borrar el equipo. Inténtalo nuevamente.",
+                                    "error"
+                                  );
+                                });
+                            }
+                          });
+                        }}
+                      >
+                        Eliminar
                       </button>
                     </td>
                   </tr>

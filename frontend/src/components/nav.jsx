@@ -34,6 +34,7 @@ function Nav() {
             Panel de Usuarios
           </button>
           <button onClick={() => navigate("/equipos")}>Panel de Equipos</button>
+          <button onClick={() => navigate("/company")}>Crear Organizacion/Proveedor</button>
         </>
       )}
       {userRole === "gestor de inventario" && (

@@ -45,6 +45,22 @@ EquipmentModel.init(
       type: new DataTypes.DATE(),
       allowNull: false,
     },
+    providerId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      references: {
+        model: 'providers',
+        key: 'id',
+      },
+      allowNull: false,
+    },
+    organizationId: {
+      type: DataTypes.INTEGER.UNSIGNED,
+      references: {
+        model: 'organizations',
+        key: 'id',
+      },
+      allowNull: false,
+    },
     createdAt: {
       type: new DataTypes.DATE(),
       allowNull: false,
