@@ -45,6 +45,4 @@ Organizations.init(
   }
 );
 
-Organizations.sync().then(() => console.log("Tabla de Organizations creada"));
-
 export default Organizations;

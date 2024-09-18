@@ -11,7 +11,9 @@ function TechnicianEquipmentManagement() {
   useEffect(() => {
 
     axios
-      .get("http://localhost:4000/api/equipment")
+      .get("http://localhost:4000/api/equipment", 
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      )
       .then((response) => {
         setEquipos(response.data);
 
@@ -39,7 +41,9 @@ function TechnicianEquipmentManagement() {
     };
 
     axios
-      .put(`http://localhost:4000/api/equipment/${id}`, updatedEquipment)
+      .put(`http://localhost:4000/api/equipment/${id}`, updatedEquipment, 
+      { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      )
       .then(() => {
         setEquipos(
           equipos.map((equipo) =>

@@ -47,6 +47,4 @@ ProviderModel.init(
   }
 );
 
-ProviderModel.sync().then(() => console.log("Providers table created"));
-
 export default ProviderModel;

@@ -8,7 +8,7 @@ export class EquipmentModel extends Model implements Equipment {
   public description!: string;
   public model!: string;
   public state!: boolean;
-  public ubication!: string;
+  public category!: string;
   public date_adquisition!: Date;
   public createdAt!: Date;
   public updatedAt!: Date;
@@ -37,7 +37,7 @@ EquipmentModel.init(
       type: new DataTypes.BOOLEAN(),
       allowNull: false,
     },
-    ubication: {
+    category: {
       type: new DataTypes.STRING(128),
       allowNull: false,
     },
@@ -75,7 +75,5 @@ EquipmentModel.init(
     sequelize: db,
   }
 );
-
-EquipmentModel.sync().then(() => console.log("Tabla de Equipment creada"));
 
 export default EquipmentModel;

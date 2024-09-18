@@ -50,6 +50,4 @@ Users.init(
   }
 );
 
-Users.sync().then(() => console.log("Users table created"));
-
 export default Users;

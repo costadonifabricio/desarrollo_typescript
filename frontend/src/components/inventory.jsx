@@ -10,7 +10,7 @@ function EquipoManagement() {
   const [description, setDescription] = useState("");
   const [model, setModel] = useState("");
   const [state, setState] = useState(true);
-  const [ubication, setUbication] = useState("");
+  const [category, setCategory] = useState("");
   const [date_adquisition, setDateAdquisition] = useState("");
   const [organizationId, setOrganizationId] = useState("");
   const [providerId, setProviderId] = useState("");
@@ -68,7 +68,7 @@ function EquipoManagement() {
       !brand ||
       !description ||
       !model ||
-      !ubication ||
+      !category ||
       !date_adquisition ||
       !organizationId ||
       !providerId
@@ -86,7 +86,7 @@ function EquipoManagement() {
       description,
       model,
       state,
-      ubication,
+      category,
       date_adquisition,
       organizationId,
       providerId,
@@ -145,7 +145,7 @@ function EquipoManagement() {
     setModel("");
     setState(true);
     setDateAdquisition("");
-    setUbication("");
+    setCategory("");
     setOrganizationId("");
     setProviderId("");
     setEditMode(false);
@@ -210,13 +210,13 @@ function EquipoManagement() {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="ubication">Ubicación</label>
+            <label htmlFor="ubication">Categoría</label>
             <input
               id="ubication"
               type="text"
               placeholder="Ubicación"
-              value={ubication}
-              onChange={(e) => setUbication(e.target.value)}
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
             />
           </div>
           <div className="form-group">
@@ -280,7 +280,7 @@ function EquipoManagement() {
                   <th>Descripción</th>
                   <th>Modelo</th>
                   <th>Estado</th>
-                  <th>Ubicación</th>
+                  <th>Categoría</th>
                   <th>Fecha de adquisición</th>
                   <th>Organización</th>
                   <th>Proveedor</th>
@@ -296,7 +296,7 @@ function EquipoManagement() {
                     <td>
                       {equipo.state ? "En Reparación" : "Fuera de Servicio"}
                     </td>
-                    <td>{equipo.ubication}</td>
+                    <td>{equipo.category}</td>
                     <td>
                       {new Date(equipo.date_adquisition).toLocaleDateString()}
                     </td>
@@ -311,7 +311,7 @@ function EquipoManagement() {
                           setDescription(equipo.description);
                           setModel(equipo.model);
                           setState(equipo.state);
-                          setUbication(equipo.ubication);
+                          setCategory(equipo.category);
                           setDateAdquisition(equipo.date_adquisition);
                           setOrganizationId(equipo.organizationId);
                           setProviderId(equipo.providerId);
