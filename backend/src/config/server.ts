@@ -6,7 +6,7 @@ import userRoutes from "../routes/users.routes";
 import organizationRoutes from "../routes/organization.routes";
 import providerRoutes from "../routes/provider.routes";
 import equipmentRoutes from "../routes/equipment.routes";
-import { dbConnection } from "../database/connection";
+import { db } from "../database/connection";
 import { EquipmentModel } from "../models/equipment.model";
 import { Organizations } from "../models/organization.model";
 import { ProviderModel } from "../models/provider.model";
@@ -31,7 +31,7 @@ export class Server {
 
   private async dgConnect() {
     try {
-      await dbConnection();
+      await db.authenticate();
       console.log("Conectado a la base de datos!");
 
       await Users.sync();

@@ -1,5 +1,6 @@
 import EquipmentModel from "../models/equipment.model";
 import { Equipment } from "../interfaces/equipment.interface";
+import { EquipmentFactory } from "../factory/pattern_factory";
 
 export class EquipmentService {
   constructor() {}
@@ -14,9 +15,13 @@ export class EquipmentService {
     return equipment;
   }
 
-  public async createEquipment(equipmentData: Equipment) {
-    const equipment = await EquipmentModel.create(equipmentData as any);
-    return equipment;
+  public async createEquipment(
+    equipmentData: Omit<Equipment, "category">,
+    category: string
+  ) {
+    const equipment = EquipmentFactory.createEquipment(equipmentData, category);
+    const createdEquipment = await EquipmentModel.create(equipment as any);
+    return createdEquipment;
   }
 
   public async updateEquipment(equipmentId: number, equipmentData: Equipment) {
@@ -34,5 +39,3 @@ export class EquipmentService {
     return deletedEquipment;
   }
 }
-
-
